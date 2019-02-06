@@ -117,13 +117,6 @@ a, a:link {
   display: table;
 }
 
-.menu-hidden {
-}
-
-.menu-visible {
-  box-shadow: 4px 4px 4px 0 #00000080;
-}
-
 .menu-item {
   line-height: 40px;
   font-size: 20px;

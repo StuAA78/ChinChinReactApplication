@@ -22,15 +22,24 @@ class Banner extends Component {
   componentDidMount() {
     document.getElementById('hamburger').addEventListener('click', this.handleClick, false);
     this.setState({menuWidth: document.getElementById('menu').clientWidth});
+    document.getElementById('darken-page').style.pointerEvents = 'none';
   }
 
   handleClick(e) {
+    let darkenPageId = document.getElementById('darken-page');
     if (this.state.open === 0) {
       document.addEventListener('click', this.handleOutsideClick, {capture: true});
       document.addEventListener('touchend', this.handleOutsideClick, {capture: true});
+      darkenPageId.style.pointerEvents = 'auto'
     } else {
       document.removeEventListener('click', this.handleOutsideClick, {capture: true});
       document.removeEventListener('touchend', this.handleOutsideClick, {capture: true});
+      // delay required to stop events below triggering straight away in Chrome
+      // ie. if the menu is opening, clicking outside of it will not send the
+      // click through to whatever was clicked on
+      setTimeout(() => {
+        darkenPageId.style.pointerEvents = 'none'
+      }, 10);
     }
 
     this.toggleMenuIcon();
@@ -73,8 +82,7 @@ class Banner extends Component {
     return (
       <div>
         <div id='darken-page' style={{
-          opacity: 0.5*this.state.open,
-          pointerEvents: this.state.open ? 'unset' : 'none'
+          opacity: 0.5*this.state.open
         }} />
         <div id='banner'>
           <div id='hamburger'><i className={this.state.open ? 'fas fa-times' : 'fas fa-bars'} /></div>
@@ -82,7 +90,10 @@ class Banner extends Component {
             <img id='logo' src='/negroni.ico' alt='Chin Chin logo'></img>
             <div id='chin-chin'>Chin Chin</div>
           </Link>
-          <div id='menu' style={{ left: -this.state.menuWidth+(this.state.menuWidth*this.state.open) }}>
+          <div id='menu' style={{
+              left: -this.state.menuWidth+(this.state.menuWidth*this.state.open),
+              boxShadow: this.state.open ? '4px 4px 4px 0 #00000080' : 'none'
+            }}>
             <Link to={homeAdd}><div className='menu-item'><span className='menu-icon'><i className='fas fa-home' /></span>Home</div></Link>
             <Link to={cocktailsAdd}><div className='menu-item'><span className='menu-icon'><i className='fas fa-cocktail' /></span>Cocktails</div></Link>
             {!loggedIn && <Link to={signInAdd}><div className='menu-item'><span className='menu-icon'><i className='fas fa-sign-in-alt' /></span>Sign In</div></Link>}
