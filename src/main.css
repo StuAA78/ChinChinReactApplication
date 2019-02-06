@@ -113,16 +113,14 @@ a, a:link {
   width: max-content;
   padding: 5px 22px;
   height: 100vh;
+  position: absolute;
+  display: table;
 }
 
 .menu-hidden {
-  left: 0;
-  position: relative;
-  transform: translateX(-100%);
 }
 
 .menu-visible {
-  transform: translateX(0%);
   box-shadow: 4px 4px 4px 0 #00000080;
 }
 
@@ -159,22 +157,13 @@ a, a:link {
 
 #darken-page {
   background-color: black;
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   height: 100%;
   width: 100%;
   transition: all 0.5s ease;
 }
-
-.darken-on {
-  opacity: 0.5;
-}
-
-.darken-off {
-  opacity: 0;
-}
-
 
 /* #endregion */
 

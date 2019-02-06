@@ -7,7 +7,10 @@ class Banner extends Component {
 
   constructor() {
     super();
-    this.state = {isVisible: false};
+    this.state = {
+      open: 0,
+      menuWidth: 500
+    };
 
     this.toggleMenuIcon = this.toggleMenuIcon.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -16,14 +19,36 @@ class Banner extends Component {
     this.Auth = new AuthService();
   }
 
-  handleClick() {
-    if (!this.state.isVisible) {
-      document.addEventListener('click', this.handleOutsideClick, false);
+  componentDidMount() {
+    console.log('mounted')
+    document.getElementById('hamburger').addEventListener('click', this.handleClick, false);
+    this.setState({menuWidth: document.getElementById('menu').clientWidth});
+  }
+
+  handleClick(e) {
+    console.log('handleClick')
+    if (this.state.open === 0) {
+      document.addEventListener('click', this.handleOutsideClick, {capture: true});
+      document.addEventListener('touchend', this.handleOutsideClick, {capture: true});
     } else {
-      document.removeEventListener('click', this.handleOutsideClick, false);
+      document.removeEventListener('click', this.handleOutsideClick, {capture: true});
+      document.removeEventListener('touchend', this.handleOutsideClick, {capture: true});
     }
 
     this.toggleMenuIcon();
+
+    // remove the hamburger event if the menu is open
+    // otherwise both handleClick and handleOutsideClick will fire when pressing it
+    // however there needs to be a delay otherwise it fires anyway
+    setTimeout(() => {
+      let hamburgerElement = document.getElementById('hamburger')
+      if (this.state.open === 0) {
+        hamburgerElement.addEventListener('click', this.handleClick, false);
+      } else {
+        hamburgerElement.removeEventListener('click', this.handleClick, false);
+      }
+    }, 100);
+
   }
 
   handleOutsideClick(e) {
@@ -31,9 +56,9 @@ class Banner extends Component {
   }
 
   toggleMenuIcon() {
-    this.setState(state => ({
-      isVisible: !state.isVisible
-    }))
+    this.setState({
+      open: (this.state.open === 0 ? 1 : 0)
+    })
   }
 
   render() {
@@ -49,14 +74,14 @@ class Banner extends Component {
 
     return (
       <div>
-        <div id='darken-page' className={this.state.isVisible ? 'darken-on' : 'darken-off'} />
+        <div id='darken-page' style={{ opacity: 0.5*this.state.open }} />
         <div id='banner'>
-          <div id='hamburger' onClick={this.handleClick}><i className={this.state.isVisible ? 'fas fa-times' : 'fas fa-bars'} /></div>
+          <div id='hamburger'><i className={this.state.open ? 'fas fa-times' : 'fas fa-bars'} /></div>
           <Link to={homeAdd}>
             <img id='logo' src='/negroni.ico' alt='Chin Chin logo'></img>
             <div id='chin-chin'>Chin Chin</div>
           </Link>
-          <div id='menu' className={this.state.isVisible ? 'menu-visible' : 'menu-hidden'}>
+          <div id='menu' style={{ left: -this.state.menuWidth+(this.state.menuWidth*this.state.open) }}>
             <Link to={homeAdd}><div className='menu-item'><span className='menu-icon'><i className='fas fa-home' /></span>Home</div></Link>
             <Link to={cocktailsAdd}><div className='menu-item'><span className='menu-icon'><i className='fas fa-cocktail' /></span>Cocktails</div></Link>
             {!loggedIn && <Link to={signInAdd}><div className='menu-item'><span className='menu-icon'><i className='fas fa-sign-in-alt' /></span>Sign In</div></Link>}
