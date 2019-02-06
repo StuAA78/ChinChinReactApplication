@@ -52,11 +52,11 @@ a, a:link {
     to { transform:rotate(360deg); }
 }
 
-#banner, #filter-bar, #filter-items {
+#filter-bar, #filter-items {
   box-shadow: 0 4px 4px 0 #00000080;
 }
 
-.spinner-animation, #hamburger, #chin-chin, .menu-item, .menu-text, #filter-bar, .collapse-menu, 
+.spinner-animation, #hamburger, #chin-chin, .menu-item, .menu-text, #filter-bar, .collapse-menu,
 .ingredient-category, #max-missing, .filter-buttons, .form .form-submit, .cabinet-button {
   color: #ffffff
 }
@@ -70,6 +70,7 @@ a, a:link {
 /* #region banner */
 
 #banner {
+  box-shadow: 0px 4px 4px 0 #00000080;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -122,6 +123,7 @@ a, a:link {
 
 .menu-visible {
   transform: translateX(0%);
+  box-shadow: 4px 4px 4px 0 #00000080;
 }
 
 .menu-item {
@@ -154,6 +156,25 @@ a, a:link {
   font-size: 20px;
   line-height: 40px;
 }
+
+#darken-page {
+  background-color: black;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  transition: all 0.5s ease;
+}
+
+.darken-on {
+  opacity: 0.5;
+}
+
+.darken-off {
+  opacity: 0;
+}
+
 
 /* #endregion */
 
