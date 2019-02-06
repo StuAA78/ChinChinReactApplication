@@ -156,6 +156,7 @@ a, a:link {
 }
 
 #darken-page {
+  z-index: 1;
   background-color: black;
   position: fixed;
   top: 0;

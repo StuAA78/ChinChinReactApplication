@@ -20,13 +20,11 @@ class Banner extends Component {
   }
 
   componentDidMount() {
-    console.log('mounted')
     document.getElementById('hamburger').addEventListener('click', this.handleClick, false);
     this.setState({menuWidth: document.getElementById('menu').clientWidth});
   }
 
   handleClick(e) {
-    console.log('handleClick')
     if (this.state.open === 0) {
       document.addEventListener('click', this.handleOutsideClick, {capture: true});
       document.addEventListener('touchend', this.handleOutsideClick, {capture: true});
@@ -74,7 +72,10 @@ class Banner extends Component {
 
     return (
       <div>
-        <div id='darken-page' style={{ opacity: 0.5*this.state.open }} />
+        <div id='darken-page' style={{
+          opacity: 0.5*this.state.open,
+          pointerEvents: this.state.open ? 'unset' : 'none'
+        }} />
         <div id='banner'>
           <div id='hamburger'><i className={this.state.open ? 'fas fa-times' : 'fas fa-bars'} /></div>
           <Link to={homeAdd}>
